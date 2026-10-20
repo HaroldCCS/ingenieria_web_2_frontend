@@ -73,3 +73,28 @@ export default defineConfig([
   },
 ])
 ```
+
+---
+
+## Contenedores (Ingeniería Web II — sesiones 9-10)
+
+> Sección agregada al migrar el proyecto a Docker. El README original de la plantilla de Vite está arriba.
+
+| Archivo | Propósito |
+|---|---|
+| `Dockerfile` | Multi-etapa: `node:22-alpine` + pnpm compilan; `nginx-unprivileged:1.27-alpine` sirve `dist/` en el puerto **8080** como usuario no root |
+| `.dockerignore` | Excluye `node_modules`, `dist`, `.env*` y `.git` del contexto de construcción |
+| `nginx.conf` | Plantilla (envsubst) que sirve la SPA y reenvía `/api/` a `API_UPSTREAM` (por defecto `http://api:8000`) |
+| `vite.config.ts` | Proxy `/api` → `VITE_DEV_API_TARGET` en `pnpm dev`, para no depender de CORS |
+| `.env.example` | Variables públicas de Vite (nunca secretos) |
+
+Levantar todo el stack (web + api + db + redis): ver `../infra/README.md`.
+
+Solo esta imagen:
+
+```bash
+docker build --target build -t umb-planifica-web:build .   # etapa con Node (para comparar tamaño)
+docker build -t umb-planifica-web:1.0 .
+```
+
+Desarrollo local sin Docker: `pnpm install && pnpm dev` (con la API corriendo en `localhost:8000`).

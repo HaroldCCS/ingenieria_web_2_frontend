@@ -1,18 +1,15 @@
 steps:
-  # Step 0: Generar .env para variables públicas usadas en build (Vite/SvelteKit)
-  - name: 'gcr.io/cloud-builders/gcloud'
-    id: 'write-env'
-    entrypoint: 'bash'
-    args:
-      - '-c'
-      - |
-        printf "VITE_API_BASE_URL=%s\n" "${_VITE_API_BASE_URL}" > .env
+  # Nota (sesiones 9-10): ya no se genera un archivo .env antes del build.
+  # .dockerignore excluye .env*, así que el valor público de Vite se pasa
+  # como --build-arg (las VITE_* son públicas: nunca un secreto).
 
   # Step 1: Construir la imagen Docker
   - name: 'gcr.io/cloud-builders/docker'
     id: 'build-image'
     args:
       - 'build'
+      - '--build-arg'
+      - 'VITE_API_BASE_URL=${_VITE_API_BASE_URL}'
       - '-t'
       - '${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPOSITORY}/${_IMAGE_NAME}:${SHORT_SHA}'
       - '-t'
@@ -65,7 +62,9 @@ steps:
       - '--platform'
       - 'managed'
       - '--port'
-      - '80'
+      - '8080'
+      - '--update-env-vars'
+      - 'API_UPSTREAM=${_API_UPSTREAM}'
       - '--memory'
       - '512Mi'
       - '--cpu'
@@ -94,3 +93,5 @@ substitutions:
   _IMAGE_NAME: 'image-front'
   _SERVICE_NAME: 'image-front-frontend-service'
   _VITE_API_BASE_URL: ''
+  # URL pública de la API a la que Nginx reenvía /api (en Compose es http://api:8000)
+  _API_UPSTREAM: 'https://cambiar-por-url-de-la-api'

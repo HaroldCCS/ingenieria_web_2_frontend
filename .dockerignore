@@ -1,0 +1,14 @@
+# Contexto de construcción mínimo (Ejercicio 3)
+node_modules/
+dist/
+.env
+.env.*
+.git
+.gitignore
+.vscode/
+.idea/
+.DS_Store
+*.log
+Dockerfile*
+cloudbuild.yml
+README.md
