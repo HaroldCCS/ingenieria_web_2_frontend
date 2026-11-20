@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import { mensajeError } from '../api/http'
 import { toast } from 'react-toastify'
 
 import { useAppDispatch, useAppSelector } from '../app/hooks'
@@ -65,7 +66,7 @@ export default function AdminUsersPage() {
       await dispatch(setUserEnabled({ id, enabled })).unwrap()
       toast.success('Estado actualizado')
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : 'No fue posible actualizar el estado')
+      toast.error(mensajeError(err, 'No fue posible actualizar el estado'))
     }
   }
 
@@ -75,7 +76,7 @@ export default function AdminUsersPage() {
       await dispatch(setUserRoles({ id, roles })).unwrap()
       toast.success('Roles actualizados')
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : 'No fue posible actualizar roles')
+      toast.error(mensajeError(err, 'No fue posible actualizar roles'))
     } finally {
       setSavingRolesById((prev) => ({ ...prev, [id]: false }))
     }

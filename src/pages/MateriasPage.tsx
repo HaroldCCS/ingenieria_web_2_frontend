@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { mensajeError } from '../api/http'
 import { toast } from 'react-toastify'
 import * as materiasApi from '../api/materiasApi'
 import * as carrerasApi from '../api/carrerasApi'
@@ -56,7 +57,7 @@ export default function MateriasPage() {
       setModalOpen(false)
       cargar()
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : 'Error al guardar')
+      toast.error(mensajeError(err, 'Error al guardar'))
     } finally {
       setSaving(false)
     }
@@ -69,7 +70,7 @@ export default function MateriasPage() {
       toast.success('Materia eliminada')
       cargar()
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : 'Error al eliminar')
+      toast.error(mensajeError(err, 'Error al eliminar'))
     }
   }
 
