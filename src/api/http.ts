@@ -64,7 +64,8 @@ export async function apiRequest<T>(
   const { auth = true, retry = false, headers, ...rest } = init;
   const nextHeaders = new Headers(headers);
 
-  if (!nextHeaders.has('content-type') && rest.body) {
+  // FormData (subida del PDF) necesita que el navegador ponga multipart/form-data con su boundary
+  if (!nextHeaders.has('content-type') && rest.body && !(rest.body instanceof FormData)) {
     nextHeaders.set('content-type', 'application/json');
   }
 
