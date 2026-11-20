@@ -166,7 +166,9 @@ export default function OfertaPage() {
                   <input
                     type="checkbox"
                     checked={seleccionada}
-                    disabled={cargando || (bloqueada)}
+                    // RF-08: no se deshabilita para que el clic muestre la alerta y no marque el check
+                    disabled={cargando}
+                    aria-disabled={bloqueada}
                     onChange={() => toggleMateria(materia)}
                     className="mt-1 h-4 w-4 rounded cursor-pointer"
                   />
