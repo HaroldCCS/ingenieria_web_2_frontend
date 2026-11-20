@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { mensajeError } from '../../api/http'
 import { toast } from 'react-toastify'
 import * as api from '../../api/estudianteApi'
 import type { MateriaResponse } from '../../api/materiasApi'
@@ -28,7 +29,7 @@ export default function OfertaPage() {
       setOferta(ofertaData)
       setPreregistro(preregistroData)
     } catch (err) {
-      const msg = err instanceof Error ? err.message : ''
+      const msg = mensajeError(err, '')
       if (msg.includes('carrera')) {
         toast.warn('Primero debes seleccionar tu carrera')
       } else if (msg.includes('pre-registro aún no')) {
@@ -60,7 +61,7 @@ export default function OfertaPage() {
         await cargar()
         toast.success('Materia removida del pre-registro')
       } catch (err) {
-        toast.error(err instanceof Error ? err.message : 'Error al remover')
+        toast.error(mensajeError(err, 'Error al remover'))
       } finally {
         setSaving((p) => ({ ...p, [materia.id]: false }))
       }
@@ -78,7 +79,7 @@ export default function OfertaPage() {
         await cargar()
         toast.success('Materia agregada al pre-registro')
       } catch (err) {
-        toast.error(err instanceof Error ? err.message : 'Error al agregar')
+        toast.error(mensajeError(err, 'Error al agregar'))
       } finally {
         setSaving((p) => ({ ...p, [materia.id]: false }))
       }
@@ -166,7 +167,9 @@ export default function OfertaPage() {
                   <input
                     type="checkbox"
                     checked={seleccionada}
-                    disabled={cargando || (bloqueada)}
+                    // RF-08: no se deshabilita para que el clic muestre la alerta y no marque el check
+                    disabled={cargando}
+                    aria-disabled={bloqueada}
                     onChange={() => toggleMateria(materia)}
                     className="mt-1 h-4 w-4 rounded cursor-pointer"
                   />
@@ -198,7 +201,7 @@ export default function OfertaPage() {
                           await api.agregarPreregistro(materia.id, newJornada)
                           await cargar()
                         } catch (err) {
-                          toast.error(err instanceof Error ? err.message : 'Error')
+                          toast.error(mensajeError(err, 'Error'))
                         } finally {
                           setSaving((p) => ({ ...p, [materia.id]: false }))
                         }

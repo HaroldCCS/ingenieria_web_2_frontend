@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { mensajeError } from '../api/http'
 import { toast } from 'react-toastify'
 
 import { useAppDispatch, useAppSelector } from '../app/hooks'
@@ -49,7 +50,7 @@ function ProfileForm() {
       ).unwrap()
       toast.success('Perfil actualizado')
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : 'No fue posible actualizar el perfil')
+      toast.error(mensajeError(err, 'No fue posible actualizar el perfil'))
     }
   }
 
@@ -62,7 +63,7 @@ function ProfileForm() {
       setNewPassword('')
       toast.success('Contraseña actualizada')
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : 'No fue posible cambiar la contraseña')
+      toast.error(mensajeError(err, 'No fue posible cambiar la contraseña'))
     }
   }
 

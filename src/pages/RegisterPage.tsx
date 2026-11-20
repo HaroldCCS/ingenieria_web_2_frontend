@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { mensajeError } from '../api/http'
 import { useNavigate, Link } from 'react-router-dom'
 import { toast } from 'react-toastify'
 
@@ -46,7 +47,7 @@ export default function RegisterPage() {
       toast.success('Registro exitoso. Ahora puedes iniciar sesión.')
       navigate('/login', { replace: true })
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : 'No fue posible registrarse')
+      toast.error(mensajeError(err, 'No fue posible registrarse'))
     }
   }
 

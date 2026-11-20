@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { mensajeError } from '../api/http'
 import { toast } from 'react-toastify'
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
@@ -25,7 +26,7 @@ export default function DashboardPage() {
     try {
       setData(await api.obtenerDashboard())
     } catch (err) {
-      if (!silencioso) toast.error(err instanceof Error ? err.message : 'Error al cargar dashboard')
+      if (!silencioso) toast.error(mensajeError(err, 'Error al cargar dashboard'))
     } finally {
       if (!silencioso) setLoading(false)
     }

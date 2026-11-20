@@ -128,3 +128,15 @@ export async function apiRequest<T>(
 
   return (await res.text()) as unknown as T;
 }
+
+/**
+ * Mensaje legible de cualquier error: ApiError/Error y también los errores
+ * serializados que devuelve `unwrap()` de Redux Toolkit ({ message }).
+ */
+export function mensajeError(err: unknown, porDefecto: string): string {
+  if (err && typeof err === 'object' && 'message' in err) {
+    const message = (err as { message?: unknown }).message
+    if (typeof message === 'string' && message) return message
+  }
+  return porDefecto
+}

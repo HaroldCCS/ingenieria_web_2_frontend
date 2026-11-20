@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { mensajeError } from '../api/http'
 import { toast } from 'react-toastify'
 import * as api from '../api/carrerasApi'
 import Button from '../components/ui/Button'
@@ -51,7 +52,7 @@ export default function CarrerasPage() {
       setModalOpen(false)
       cargar()
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : 'Error al guardar')
+      toast.error(mensajeError(err, 'Error al guardar'))
     } finally {
       setSaving(false)
     }
@@ -74,7 +75,7 @@ export default function CarrerasPage() {
       toast.success('Carrera eliminada')
       cargar()
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : 'Error al eliminar')
+      toast.error(mensajeError(err, 'Error al eliminar'))
     }
   }
 

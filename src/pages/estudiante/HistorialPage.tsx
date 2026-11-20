@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react'
+import { mensajeError } from '../../api/http'
 import { toast } from 'react-toastify'
 import * as api from '../../api/estudianteApi'
 import type { MateriaResponse } from '../../api/materiasApi'
@@ -22,7 +23,7 @@ export default function HistorialPage() {
       setSeleccionadas(res.materiasDetectadas.map((m) => m.id))
       toast.success(`Se detectaron ${res.total} materias aprobadas`)
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : 'Error al procesar el PDF')
+      toast.error(mensajeError(err, 'Error al procesar el PDF'))
     } finally {
       setParsing(false)
     }
@@ -35,7 +36,7 @@ export default function HistorialPage() {
       setConfirmado(true)
       toast.success('Historial guardado correctamente')
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : 'Error al confirmar')
+      toast.error(mensajeError(err, 'Error al confirmar'))
     } finally {
       setConfirming(false)
     }
