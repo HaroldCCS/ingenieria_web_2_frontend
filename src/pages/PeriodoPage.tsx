@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { mensajeError } from '../api/http'
 import { toast } from 'react-toastify'
 import * as api from '../api/periodoApi'
 import Button from '../components/ui/Button'
@@ -66,7 +67,7 @@ export default function PeriodoPage() {
       setPeriodo(data)
       toast.success('Periodo guardado exitosamente')
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : 'Error al guardar')
+      toast.error(mensajeError(err, 'Error al guardar'))
     } finally {
       setSaving(false)
     }

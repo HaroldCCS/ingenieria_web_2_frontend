@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { mensajeError } from '../api/http'
 import { useNavigate, Link } from 'react-router-dom'
 import { toast } from 'react-toastify'
 
@@ -35,7 +36,7 @@ export default function LoginPage() {
         navigate('/app/dashboard', { replace: true })
       }
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : 'No fue posible iniciar sesión')
+      toast.error(mensajeError(err, 'No fue posible iniciar sesión'))
     }
   }
 

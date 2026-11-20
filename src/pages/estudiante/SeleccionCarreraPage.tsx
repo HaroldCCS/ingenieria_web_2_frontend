@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { mensajeError } from '../../api/http'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import * as carrerasApi from '../../api/carrerasApi'
@@ -34,7 +35,7 @@ export default function SeleccionCarreraPage() {
       toast.success('Carrera seleccionada exitosamente')
       navigate('/app/estudiante/oferta')
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : 'Error al guardar')
+      toast.error(mensajeError(err, 'Error al guardar'))
     } finally {
       setSaving(false)
     }

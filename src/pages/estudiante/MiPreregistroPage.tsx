@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { mensajeError } from '../../api/http'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import * as api from '../../api/estudianteApi'
@@ -41,7 +42,7 @@ export default function MiPreregistroPage() {
       await cargar()
       toast.success('Materia removida')
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : 'Error al remover')
+      toast.error(mensajeError(err, 'Error al remover'))
     } finally {
       setRemoving((p) => ({ ...p, [item.materiaId]: false }))
     }
