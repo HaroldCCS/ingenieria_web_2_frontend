@@ -20,18 +20,25 @@ export default function DashboardPage() {
   const [exporting, setExporting] = useState(false)
   const accessToken = useAppSelector((s) => s.auth.accessToken)
 
-  async function cargar() {
-    setLoading(true)
+  async function cargar(silencioso = false) {
+    if (!silencioso) setLoading(true)
     try {
       setData(await api.obtenerDashboard())
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : 'Error al cargar dashboard')
+      if (!silencioso) toast.error(err instanceof Error ? err.message : 'Error al cargar dashboard')
     } finally {
-      setLoading(false)
+      if (!silencioso) setLoading(false)
     }
   }
 
-  useEffect(() => { cargar() }, [])
+  // RF-09: latencia mínima -> se refresca solo cada 10 s mientras la pestaña está visible
+  useEffect(() => {
+    cargar()
+    const id = window.setInterval(() => {
+      if (document.visibilityState === 'visible') cargar(true)
+    }, 10_000)
+    return () => window.clearInterval(id)
+  }, [])
 
   async function handleExport() {
     setExporting(true)
@@ -69,7 +76,7 @@ export default function DashboardPage() {
           </p>
         </div>
         <div className="flex gap-2">
-          <Button variant="secondary" onClick={cargar} disabled={loading} className="h-10 rounded-xl px-4">
+          <Button variant="secondary" onClick={() => cargar()} disabled={loading} className="h-10 rounded-xl px-4">
             {loading ? 'Cargando...' : '↺ Actualizar'}
           </Button>
           <Button onClick={handleExport} disabled={exporting} className="h-10 rounded-xl px-4">
