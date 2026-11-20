@@ -20,7 +20,7 @@ export default function RegisterPage() {
   const [phone, setPhone] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [acceptedTerms, setAcceptedTerms] = useState(false)
-  const [accountType, setAccountType] = useState<'ADMIN' | 'USER'>('USER')
+  const [accountType, setAccountType] = useState<'ADMIN' | 'ESTUDIANTE'>('ESTUDIANTE')
 
 
   async function onSubmit(e: React.FormEvent) {
@@ -92,15 +92,15 @@ export default function RegisterPage() {
 
               <button
                 type="button"
-                onClick={() => setAccountType('USER')}
+                onClick={() => setAccountType('ESTUDIANTE')}
                 className={
-                  accountType === 'USER'
+                  accountType === 'ESTUDIANTE'
                     ? 'flex items-center justify-center gap-2 rounded-lg bg-white px-3 py-2 text-sm font-medium text-[var(--color-text)] shadow-sm'
                     : 'flex items-center justify-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-[var(--color-text-muted)]'
                 }
               >
                 <UserIcon className="h-4 w-4" />
-                Usuario
+                Estudiante
               </button>
             </div>
           </div>

@@ -194,7 +194,7 @@ export default function OfertaPage() {
                         const newJornada = e.target.value as Jornada
                         setSaving((p) => ({ ...p, [materia.id]: true }))
                         try {
-                          await api.eliminarPreregistro(materia.id)
+                          // El backend hace upsert: cambia la jornada sin perder el cupo
                           await api.agregarPreregistro(materia.id, newJornada)
                           await cargar()
                         } catch (err) {
