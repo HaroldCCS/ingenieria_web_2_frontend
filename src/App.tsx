@@ -53,7 +53,10 @@ export default function App() {
           <Route element={<RequireAuth />}>
             <Route path="/app" element={<PrivateLayout />}>
               <Route index element={<Navigate to="dashboard" replace />} />
-              <Route path="dashboard" element={<DashboardPage />} />
+              {/* RF-09: el dashboard es solo para Admin y Gestor */}
+              <Route element={<RequireRole roles={['ADMIN', 'GESTOR']} redirectTo="/app/estudiante/home" />}>
+                <Route path="dashboard" element={<DashboardPage />} />
+              </Route>
               <Route path="profile" element={<ProfilePage />} />
 
               {/* Admin only */}
@@ -69,7 +72,7 @@ export default function App() {
               </Route>
 
               {/* Estudiante */}
-              <Route element={<RequireRole roles={['ESTUDIANTE']} redirectTo="/app/dashboard" />}>
+              <Route element={<RequireRole roles={['ESTUDIANTE']} redirectTo="/app/profile" />}>
                 <Route path="estudiante/home" element={<HomeEstudiantePage />} />
                 <Route path="estudiante/carrera" element={<SeleccionCarreraPage />} />
                 <Route path="estudiante/historial" element={<HistorialPage />} />
